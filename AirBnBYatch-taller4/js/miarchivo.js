@@ -77,21 +77,10 @@ console.log('Listado de Embarcaciones para Rentar')
 //     console.log(" Precio con IVA: US$ " + listaProducto.calculatePriceIVA());
 // }
 
-// Lista los productos disponibles 
-listaProductos.forEach((item, index, array) => {
-    console.log(" ")
-    console.log (item)
-})
 
 console.log(' ')
-console.log('*** Fin del Proceso ***')
+console.log('*** Fin del Proceso creacion de Productos ***')
 
-// Ejemplo de busqueda de item de venta
-const localiza = listaProductos.find((item) => item.name === 'Naara')
-console.log("Buscar Producto por Nombre")
-console.log (" ")
-console.log(localiza)
-console.log("*** fin de listado enconrados ***")
 
 // Ejemplo de encontrar Productos mas economicos
 const economicos = listaProductos.filter((item) => item.price <= 100 )
@@ -108,7 +97,7 @@ console.log(" ")
 console.log(newlist)
 console.log("*** fin de listado nombes de yates ***")
 
-// Genera Nueva lista ordenada de Productos nombres ascendetes
+// Ejemplo Genera Nueva lista ordenada de Productos nombres ascendetes
 const listOrdenada = listaProductos.sort((a,b) => {
     if (a.name > b.name){
         return 1
@@ -127,34 +116,63 @@ console.log(listOrdenada)
 console.log("*** fin de la lista ordenada ***")
 
 
-// Calcula total $$ de invetanrio de productos
+// Ejemplo Calcula total $$ de inventario de productos
 const total = listaProductos.reduce((accum, item) => accum + item.price, 0)
 console.log("Imprime total inventario del sitio")
 console.log(" ")
 console.log("el total del inventario es US$: " + total)
 console.log("*** fin total inventario ***")
 
+console.log("*** fin total inventario ***")
+console.log(" ")
 
+console.log(" Imprime lista de producto disponibles")
+console.log(" -------------------------------------")
 
-
-// Simula una compra
-let idCompra = 5 // dato se podria pedir por pantalla
-let cantPersonas = 3 // dato se puede pedir por pantalla
-
-if ((idCompra >= 0) && (idCompra < listaProductos.length)) {
-    const myDetallePedido = new DetallePedido(listaProductos[idCompra], cantPersonas)
-    const myPedido = new Pedido (Date(), myDetallePedido)
-
-    // Imprime Compra
+// Imprime Lista de productos disponibles 
+listaProductos.forEach((item, index, array) => {
     console.log(" ")
-    console.log("Compra Simulada Impresion")
+    console.log ("Yate: '" + item.name + "' precio por persona US$ " + item.price)
+})
 
-    console.log(myPedido)
-    console.log(myDetallePedido)
-    console.log(" Total a pagar: US$ " + cantPersonas * listaProductos[idCompra].calculatePriceIVA())
+console.log(" ")
+console.log("*** Simula comprar Item ***")
+// Simula una compra
+
+let nombre = prompt("ingrese nombre de Producto valido de la lista o 'exit' para salir")
+
+if (nombre != "exit"){
+    // busqueda de item de venta usando find()
+    const localiza = listaProductos.find((item, index) => {
+        if (item.name === nombre) {
+            let idCompra = index // indice de dato a comprar
+            let cantPersonas = parseInt(prompt("ingrese cantidad de personas que tomaran Yate"))
+
+            console.log("Item encontrado " + item.name + " su indice : " + index)
+            console.log("Cantidad Comprada " + cantPersonas)
+
+            if ((idCompra >= 0) && (idCompra < listaProductos.length)) {
+                const myDetallePedido = new DetallePedido(listaProductos[idCompra], cantPersonas)
+                const myPedido = new Pedido (Date(), myDetallePedido)
+
+                // Imprime Compra
+                console.log(" ")
+                console.log("Compra Simulada : Impresion Voucher")
+
+                console.log(myPedido)
+                console.log(myDetallePedido)
+                console.log(" Total a pagar: US$ " + cantPersonas * listaProductos[idCompra].calculatePriceIVA() + " IVA Incluido")
+            
+                return true
+            }
+            
+        }
+    })  
+
+    if (!localiza){
+        console.log("Error: Nombre Producto: " + nombre + " no fue encontrado en la lista de productos, no es posible comprarlo")
+        console.log (" ")
+    }
 }
-else {
-    console.log("")
-    console.log("Problemas al Imprimir la venta")
-    console.log("Error esta tratando de comprar un producto que no existe")
-}
+
+console.log("Fin del programa...")
